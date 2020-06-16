@@ -1,34 +1,73 @@
-const express = require('express')
+const express = require('express');
+const { uuid } = require('uuidv4');
 
 const app = express()
 
+app.use(express.json())
 
+const projects = [];
 
 app.get('/projects', (req, res) => {
-    return res.json([
-        'Project 1',
-        'Project 2'
-    ])
+
+    const { title} = req.query
+
+    const results = title 
+    ? projects.filter(project => project.title.includes(title))
+    : projects
+
+    return res.json(results)
 })
 
 app.post('/projects', (req, res) => {
-    return res.json([
-        'Project 1',
-        'Project 2',
-        'Project 3'
-    ])
+
+    const { title, owner } = req.body
+    // console.log(body)
+    const project = {id: uuid(), title, owner}
+
+    projects.push(project)
+
+    return res.json(`Project of title ${project.title} created`)
 })
 
 
 app.put('/projects/:id', (req, res) => {
-    return res.json([
-        'Project 1',
-        'Project 2',
-        'Project 3'
-    ])
+
+    const {id} = req.params
+    const { title, owner } = req.body
+
+    const projectIndex = projects.findIndex(project => project.id === id)
+
+    if (projectIndex < 0){
+        return res.status(400).json({error: 'Project not found'})
+    }
+
+    const project = {
+        id,
+        title,
+        owner
+    }
+
+    projects[projectIndex] = project
+
+    return res.json(project)
+})
+
+app.delete('/projects/:id', (req, res) => {
+    const {id} = req.params
+
+    const projectIndex = projects.findIndex(project => project.id === id)
+
+    if (projectIndex < 0){
+        return res.status(400).json({error: 'Project not found'})
+    }
+
+    projects.splice(projectIndex, 1);
+
+    return res.status(204).send()
+
 })
 
 app.listen(3333, () => {
-    console.log('Servidor rodando na porta 3333 ✨')
+    console.log('Server online in http://localhost:3333 ✨')
 })
 
