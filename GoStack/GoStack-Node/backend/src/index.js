@@ -59,7 +59,7 @@ app.post('/projects', (req, res) => {
 
     projects.push(project)
 
-    return res.json(`Project of title ${project.title} created`)
+    return res.json(project)
 })
 
 
