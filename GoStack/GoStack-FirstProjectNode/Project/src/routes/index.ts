@@ -1,17 +1,9 @@
 import { Router } from 'express';
+import appointmentsRouter from './appoinments.routes'
 
 const routes = Router();
 
-routes.post('/users', (request, response) => {
+routes.use('/appointments', appointmentsRouter)
 
-  const { name, email } = request.body;
-
-  const user = {
-    name,
-    email
-  }
-
-  return response.json(user)
-})
 
 export default routes;
