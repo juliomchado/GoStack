@@ -9,10 +9,12 @@ import { Title, Form, Repositories, Error } from './styles';
 import Repository from '../Repository';
 
 interface Repository {
+  // eslint-disable-next-line camelcase
   full_name: string;
   description: string;
   owner: {
     login: string;
+    // eslint-disable-next-line camelcase
     avatar_url: string;
   };
 }
